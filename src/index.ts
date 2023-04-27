@@ -13,12 +13,12 @@ function generateMatrix(arraySize: number): any {
     }
 
     let startRow = 0;
-    let currentColumn = 0;
+    let startColumn = arraySize - 1;
 
     let endcapRow = arraySize - 1;
-    let endcapColumn = arraySize - 1;
+    let endcapColumn = 0;
 
-    let counter = 0;
+    let counter = 1;
 
     //populate the array
     let endResult: number[][] = Array.from(
@@ -26,34 +26,36 @@ function generateMatrix(arraySize: number): any {
         () => new Array(arraySize)
     );
 
-    while (counter < arraySize * arraySize) {
+    while (counter <= arraySize * arraySize) {
         // left to right on row
-        for (let i = startRow; i < endcapRow; i++) {
+        for (let i = startRow; i <= endcapRow; i++) {
             endResult[startRow][i] = counter;
             counter++;
         }
-        startRow++;
 
+        endcapColumn++;
         // up to down on column
-        for (let i = currentColumn; i < endcapColumn; i++) {
-            endResult[i][currentColumn] = counter;
+        for (let i = endcapColumn; i <= startColumn; i++) {
+            endResult[i][startColumn] = counter;
             counter++;
         }
-        currentColumn++;
 
+        endcapRow--;
         // right to left on row
-        for (let i = endcapRow; i > startRow; i--) {
+        for (let i = endcapRow; i >= startRow; i--) {
             endResult[endcapRow][i] = counter;
             counter++;
         }
-        endcapRow--;
+
+        startColumn--;
 
         // down to up on column
-        for (let i = endcapColumn; i > currentColumn; i--) {
+        for (let i = startColumn; i >= endcapColumn; i--) {
             endResult[i][endcapColumn] = counter;
             counter++;
         }
-        endcapColumn--;
+
+        startRow++;
     }
 
     return endResult;
@@ -62,6 +64,12 @@ function generateMatrix(arraySize: number): any {
 consoleStart();
 
 validateFxn(generateMatrix(3), [
+    [1, 2, 3],
+    [8, 9, 4],
+    [7, 6, 5],
+]);
+
+validateFxn(generateMatrix(4), [
     [1, 2, 3],
     [8, 9, 4],
     [7, 6, 5],

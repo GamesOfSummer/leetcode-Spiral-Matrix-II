@@ -12,11 +12,11 @@ function generateMatrix(arraySize: number): any {
         return [1];
     }
 
-    let currentColumn = arraySize - 1;
-    let currentRow = 0;
+    let startRow = 0;
+    let currentColumn = 0;
 
     let endcapRow = arraySize - 1;
-    let endcapColumn = 0;
+    let endcapColumn = arraySize - 1;
 
     let counter = 0;
 
@@ -28,29 +28,32 @@ function generateMatrix(arraySize: number): any {
 
     while (counter < arraySize * arraySize) {
         // left to right on row
-        for (let i = currentRow; i < arraySize; i++) {
-            endResult[currentRow][i] = counter;
+        for (let i = startRow; i < endcapRow; i++) {
+            endResult[startRow][i] = counter;
             counter++;
         }
+        startRow++;
 
         // up to down on column
-        for (let i = currentColumn; i < arraySize; i++) {
+        for (let i = currentColumn; i < endcapColumn; i++) {
             endResult[i][currentColumn] = counter;
             counter++;
         }
+        currentColumn++;
 
         // right to left on row
-        for (let i = endcapRow; i < arraySize; i--) {
+        for (let i = endcapRow; i > startRow; i--) {
             endResult[endcapRow][i] = counter;
             counter++;
         }
+        endcapRow--;
 
         // down to up on column
-        for (let i = endcapColumn; i < arraySize; i--) {
+        for (let i = endcapColumn; i > currentColumn; i--) {
             endResult[i][endcapColumn] = counter;
             counter++;
         }
-        endcapColumn++;
+        endcapColumn--;
     }
 
     return endResult;

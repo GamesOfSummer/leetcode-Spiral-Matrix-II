@@ -12,26 +12,45 @@ function generateMatrix(arraySize: number): any {
         return [1];
     }
 
-    let column = 0;
-    let column2 = 1;
+    let currentColumn = arraySize - 1;
     let currentRow = 0;
-    let row2 = 0;
 
-    let index = 0;
+    let endcapRow = arraySize - 1;
+    let endcapColumn = 0;
+
     let counter = 0;
 
+    //populate the array
     let endResult: number[][] = Array.from(
         Array(arraySize),
         () => new Array(arraySize)
     );
 
-    while (index < arraySize * arraySize) {
+    while (counter < arraySize * arraySize) {
+        // left to right on row
         for (let i = currentRow; i < arraySize; i++) {
             endResult[currentRow][i] = counter;
             counter++;
         }
 
-        index++;
+        // up to down on column
+        for (let i = currentColumn; i < arraySize; i++) {
+            endResult[i][currentColumn] = counter;
+            counter++;
+        }
+
+        // right to left on row
+        for (let i = endcapRow; i < arraySize; i--) {
+            endResult[endcapRow][i] = counter;
+            counter++;
+        }
+
+        // down to up on column
+        for (let i = endcapColumn; i < arraySize; i--) {
+            endResult[i][endcapColumn] = counter;
+            counter++;
+        }
+        endcapColumn++;
     }
 
     return endResult;

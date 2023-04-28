@@ -7,55 +7,56 @@ import {
 
 function generateMatrix(arraySize: number): any {
     if (arraySize < 1) {
-        return [];
+        return [[]];
     } else if (arraySize == 1) {
-        return [1];
+        return [[1]];
     }
 
+    let startColumn = 0;
     let startRow = 0;
-    let startColumn = arraySize - 1;
 
+    let endcapColumn = arraySize - 1;
     let endcapRow = arraySize - 1;
-    let endcapColumn = 0;
 
     let counter = 1;
 
     //populate the array
-    let endResult: number[][] = Array.from(
-        Array(arraySize),
-        () => new Array(arraySize)
-    );
+    let endResult: number[][] = [];
+
+    for (var i = 0; i < arraySize; i++) {
+        endResult[i] = new Array(arraySize);
+    }
 
     while (counter <= arraySize * arraySize) {
         // left to right on row
-        for (let i = startRow; i <= endcapRow; i++) {
-            endResult[startRow][i] = counter;
-            counter++;
-        }
-
-        endcapColumn++;
-        // up to down on column
-        for (let i = endcapColumn; i <= startColumn; i++) {
-            endResult[i][startColumn] = counter;
-            counter++;
-        }
-
-        endcapRow--;
-        // right to left on row
-        for (let i = endcapRow; i >= startRow; i--) {
-            endResult[endcapRow][i] = counter;
-            counter++;
-        }
-
-        startColumn--;
-
-        // down to up on column
-        for (let i = startColumn; i >= endcapColumn; i--) {
-            endResult[i][endcapColumn] = counter;
+        for (let i = startColumn; i <= endcapColumn; i++) {
+            endResult[startColumn][i] = counter;
             counter++;
         }
 
         startRow++;
+        // up to down on column
+        for (let i = startRow; i <= endcapRow; i++) {
+            endResult[i][endcapColumn] = counter;
+            counter++;
+        }
+
+        endcapColumn--;
+        // right to left on row
+        for (let i = endcapColumn; i >= startColumn; i--) {
+            endResult[endcapRow][i] = counter;
+            counter++;
+        }
+
+        endcapRow--;
+
+        // down to up on column
+        for (let i = endcapRow; i >= startRow; i--) {
+            endResult[i][startColumn] = counter;
+            counter++;
+        }
+
+        startColumn++;
     }
 
     return endResult;
